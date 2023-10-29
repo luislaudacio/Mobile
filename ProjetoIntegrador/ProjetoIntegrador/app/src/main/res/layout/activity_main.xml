@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="25px"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logotipo"
+            android:textColor="#333"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:layout_gravity="left"
+            android:gravity="left"
+            android:layout_weight="90"
+            android:layout_marginLeft="5dp"
+            >
+
+        </TextView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login / Registrar-se"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textColor="#333"
+                android:layout_marginLeft="10dp"
+                android:textSize="15dp"
+                >
+
+            </TextView>
+            
+            
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_person_24"
+                android:layout_marginLeft="5dp"
+                >
+
+            </ImageView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="25px"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Login"
+                android:textSize="50dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                >
+
+            </TextView>
+            
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="15dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtEmail"
+                    android:hint="Email"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/edit_text"
+                    android:padding="10dp"
+                    >
+
+                </EditText>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtSenha"
+                    android:hint="Senha"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/edit_text"
+                    android:padding="10dp"
+                    >
+
+                </EditText>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnSalvar"
+                    android:hint="Entrar"
+                    android:layout_marginTop="15dp"
+                    android:textColorHint="@color/white"
+                    android:backgroundTint="@color/pink"
+                    android:layout_gravity="center"
+                    >
+
+                </Button>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="100dp"
+                        >
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/criarConta"
+                            android:textSize="17dp"
+                            android:background="@drawable/frame"
+                            android:padding="25dp"
+                            android:textAlignment="center"
+                            >
+
+                        </TextView>
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

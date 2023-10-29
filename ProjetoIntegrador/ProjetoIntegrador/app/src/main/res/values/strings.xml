@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ProjetoIntegrador</string>
+    <string name="Login"> Login </string>
+    <string name="criarConta">Não possui uma conta? <font color="#f1396d">Clique Aqui</font> </string>
+</resources>
