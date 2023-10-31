@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.projetointegrador.api.RetrofitClient
-import com.example.projetointegrador.dao.DaoUsuarios
 import com.example.projetointegrador.models.Usuario
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,7 +17,6 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     lateinit var usuario:Usuario
-    lateinit var daoUsuarios: DaoUsuarios;
 
     lateinit var btnLogar:Button
     lateinit var txtEmail:EditText
@@ -27,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        daoUsuarios = DaoUsuarios()
 
         btnLogar = findViewById(R.id.btnSalvar)
         txtEmail = findViewById(R.id.txtEmail)
@@ -70,8 +67,16 @@ class MainActivity : AppCompatActivity() {
                         usuario.access_token = jsonResponse.access_token
                         Log.i("Token Gerado", "onResponse: " + jsonResponse.toString())
                         Toast.makeText(this@MainActivity, "Token Gerado", Toast.LENGTH_LONG).show()
-                        daoUsuarios.CadastraUsuario(usuario)
-                        return
+
+//                        var intent: Intent = Intent(this@MainActivity, TelaCadastro:: class.java)
+//                        intent.putExtra("usuario", usuario)
+//                        startActivity(intent)
+//                        return
+//                        val extras = intent.extras
+//                        if (extras != null) {
+//                            usuario = getIntent().getSerializableExtra("usuario") as Usuario
+//                            Log.i("testad", usuario.toString())
+//                        }
                     }
                 }
 
@@ -81,6 +86,10 @@ class MainActivity : AppCompatActivity() {
                     return
                 }
             })
+
+
+
+
     }
 }
 
