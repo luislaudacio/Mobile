@@ -154,7 +154,6 @@
                             android:padding="25dp"
                             android:textAlignment="center"
                             android:clickable="true"
-
                             android:onClick="criarConta"
                             >
 

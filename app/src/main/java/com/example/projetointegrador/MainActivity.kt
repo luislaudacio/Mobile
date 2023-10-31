@@ -1,8 +1,10 @@
 package com.example.projetointegrador
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -34,6 +36,10 @@ class MainActivity : AppCompatActivity() {
         btnLogar.setOnClickListener {logar()}
     }
 
+    fun criarConta(view: View) {
+        var intent: Intent = Intent(this, TelaCadastro:: class.java)
+        startActivity(intent)
+    }
     private fun logar () {
         if(txtEmail.text.toString().isNullOrEmpty() || txtSenha.text.toString().isNullOrEmpty()) {
             Toast.makeText(this@MainActivity,
