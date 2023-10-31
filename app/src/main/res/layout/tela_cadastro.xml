@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:orientation="vertical">
 
 
@@ -40,7 +39,7 @@
             android:orientation="horizontal"
             android:layout_gravity="center"
             >
-            
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,8 +52,8 @@
                 >
 
             </TextView>
-            
-            
+
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,14 +83,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/Login"
+                android:text="@string/Cadastrar"
                 android:textSize="50dp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 >
 
             </TextView>
-            
+
 
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -103,8 +102,32 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/txtUsuario"
+                    android:hint="Usuário"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/edit_text"
+                    android:padding="10dp"
+                    >
+
+                </EditText>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/txtEmail"
                     android:hint="Email"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/edit_text"
+                    android:padding="10dp"
+                    >
+
+                </EditText>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtData"
+                    android:hint="Data de Nascimento"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/edit_text"
                     android:padding="10dp"
@@ -124,6 +147,7 @@
 
                 </EditText>
 
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -137,31 +161,29 @@
 
                 </Button>
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="100dp"
+                    >
+
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="100dp"
+                        android:layout_height="match_parent"
+                        android:text="@string/logarConta"
+                        android:textSize="17dp"
+                        android:background="@drawable/frame"
+                        android:padding="25dp"
+                        android:textAlignment="center"
+                        android:clickable="true"
+                        android:onClick="logarConta"
                         >
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/criarContaTextView"
-                            android:text="@string/criarConta"
-                            android:textSize="17dp"
-                            android:background="@drawable/frame"
-                            android:padding="25dp"
-                            android:textAlignment="center"
-                            android:clickable="true"
-
-                            android:onClick="criarConta"
-                            >
-
-                        </TextView>
+                    </TextView>
 
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
