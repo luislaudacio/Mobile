@@ -14,6 +14,7 @@ import com.example.projetointegrador.models.Usuario
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,14 +25,18 @@ class MainActivity : AppCompatActivity() {
     lateinit var txtEmail:EditText
     lateinit var txtSenha:EditText
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         daoUsuarios = DaoUsuarios()
 
+
+
         btnLogar = findViewById(R.id.btnSalvar)
         txtEmail = findViewById(R.id.txtEmail)
         txtSenha = findViewById(R.id.txtSenha)
+
 
         btnLogar.setOnClickListener {logar()}
     }
