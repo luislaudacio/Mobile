@@ -28,6 +28,13 @@
             >
 
         </activity>
+
+        <activity
+            android:name=".MinhaConta"
+            android:exported="false"
+            >
+
+        </activity>
     </application>
 
 </manifest>
