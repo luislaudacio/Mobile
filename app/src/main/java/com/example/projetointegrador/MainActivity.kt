@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
     private fun logar () {
-        var intent: Intent = Intent(this, MinhaConta:: class.java)
+        var intent: Intent = Intent(this, FeedGeral:: class.java)
         startActivity(intent)
 
 

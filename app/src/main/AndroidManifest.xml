@@ -35,6 +35,13 @@
             >
 
         </activity>
+
+        <activity
+            android:name=".FeedGeral"
+            android:exported="false"
+            >
+
+        </activity>
     </application>
 
 </manifest>

@@ -4,4 +4,8 @@
     <string name="Cadastrar"> Cadastrar </string>
     <string name="criarConta"> <font color="#f1396d"> <a>Clique aqui para criar sua conta</a></font> </string>
     <string name="logarConta"><font color="#f1396d"> <a>Clique aqui para logar na conta</a></font> </string>
+    <string name="FeedGeral">Feed Geral</string>
+    <string name="Seguindo">Seguindo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
