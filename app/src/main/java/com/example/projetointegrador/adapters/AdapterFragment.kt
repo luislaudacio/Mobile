@@ -7,15 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.projetointegrador.MinhaConta
+import com.example.projetointegrador.FeedGeral
 import com.example.projetointegrador.R
 import com.example.projetointegrador.models.ImageItem
 
-
-class AdapterMConta(var contexto: MinhaConta, var listaImagens:List<ImageItem>):RecyclerView.Adapter<AdapterMConta.MeuViewHolder> () {
-
-
-    var posicaoClicada:Int = -1
+class AdapterFragment(private val context: Context, private val listaImagens: List<ImageItem>) : RecyclerView.Adapter<AdapterFragment.MeuViewHolder> () {
 
     class MeuViewHolder(itemView: View, val contexto: Context) : RecyclerView.ViewHolder(itemView) {
 
@@ -23,16 +19,16 @@ class AdapterMConta(var contexto: MinhaConta, var listaImagens:List<ImageItem>):
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MeuViewHolder {
-        var inflater: LayoutInflater = LayoutInflater.from(contexto)
+        var inflater: LayoutInflater = LayoutInflater.from(context)
         var view = inflater.inflate(R.layout.style_imagens, parent, false)
 
-        return MeuViewHolder(view, contexto)
+        return MeuViewHolder(view, context)
     }
 
     override fun onBindViewHolder(holder: MeuViewHolder, position: Int) {
         val imageItem = listaImagens[position]
 
-        Glide.with(contexto)
+        Glide.with(context)
             .load(imageItem.imageUrl)
             .into(holder.estiloImagem)
     }
@@ -40,5 +36,9 @@ class AdapterMConta(var contexto: MinhaConta, var listaImagens:List<ImageItem>):
     override fun getItemCount(): Int {
         return this.listaImagens.size
     }
+
+
+
+
 
 }
