@@ -10,9 +10,11 @@ interface ServicoUsuario {
     @POST("auth/login")
     fun getToken(@Body usuario: Usuario): Call<Usuario>
 
-//    @Headers({"Authorization", "Bearer "+ token})
-//    @GET("contatos/{id}")
-//    fun getContato(@Path("id") id: Int): Call<Contato>
+    @POST("user/register")
+    fun userRegister(@Body usuario: Usuario): Call<Usuario>
+
+    @GET("user/email/{email}")
+    fun getUserInfo(@Path("email") email: String, @Header("Authorization") token: String): Call<Usuario>
 //
 //    @GET("contatos")
 //    fun getAllContatos(): Call<List<Contato>>

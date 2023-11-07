@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projetointegrador.adapters.AdapterFragmentSG
 import com.example.projetointegrador.models.ImageItem
+import com.example.projetointegrador.models.Usuario
 
 
 class SeguindoFragment : Fragment() {

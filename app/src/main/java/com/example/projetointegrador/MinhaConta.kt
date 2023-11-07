@@ -7,27 +7,33 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projetointegrador.adapters.AdapterMConta
 import com.example.projetointegrador.models.ImageItem
+import com.example.projetointegrador.models.Usuario
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 
 class MinhaConta : AppCompatActivity() {
+    lateinit var usuario: Usuario
+    lateinit var nomeMinhaConta: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.minha_conta)
 
-        val listaImagens = listOf(
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            )
+        val extras = intent.extras
+        if (extras != null) {
+            usuario = getIntent().getSerializableExtra("usuario") as Usuario
+        }
+
+        nomeMinhaConta = findViewById(R.id.nomeMinhaConta)
+        nomeMinhaConta.text = usuario.usuario
+
+        val listaImagens = mutableListOf<ImageItem>()
+
+        if (usuario.posts != null) {
+            usuario.posts.forEach { post ->
+                listaImagens.add(ImageItem(post.pathFotoPost))
+            }
+        }
 
         val adapter = AdapterMConta(this, listaImagens)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerImgs)
@@ -36,8 +42,6 @@ class MinhaConta : AppCompatActivity() {
 
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = adapter
-
-
 
     }
 }
