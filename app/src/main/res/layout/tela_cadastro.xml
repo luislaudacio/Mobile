@@ -6,7 +6,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    >
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -67,6 +70,15 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/line_divider"
+        >
+
+    </ImageView>
+
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -116,6 +128,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtEmail"
                     android:hint="Email"
+                    android:inputType="textEmailAddress"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/edit_text"
                     android:padding="10dp"
@@ -124,13 +137,17 @@
                 </EditText>
 
                 <EditText
+                    android:id="@+id/txtData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtData"
                     android:hint="Data de Nascimento"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/edit_text"
                     android:padding="10dp"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     >
 
                 </EditText>
@@ -153,6 +170,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/btnSalvar"
                     android:hint="Entrar"
+                    android:inputType="textPassword"
                     android:layout_marginTop="15dp"
                     android:textColorHint="@color/white"
                     android:backgroundTint="@color/pink"
