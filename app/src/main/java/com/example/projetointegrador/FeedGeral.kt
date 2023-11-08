@@ -3,11 +3,13 @@ package com.example.projetointegrador
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.projetointegrador.NavigationUtils.Navigation
 import com.example.projetointegrador.adapters.ViewPagerAdapter
 import com.example.projetointegrador.models.Usuario
 import com.google.android.material.tabs.TabLayout
@@ -29,12 +31,15 @@ class FeedGeral : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.feed_geral)
 
+        val textoPerfil: TextView = findViewById(R.id.textoPerfil)
         val tabLayout = findViewById<TabLayout>(R.id.tabs)
 
         tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.pink))
 
 
         configTabLayout()
+
+        textoPerfil.setOnClickListener{Navigation.redirectToMainActivity(this)}
 
     }
 
