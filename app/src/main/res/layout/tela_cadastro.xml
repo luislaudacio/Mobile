@@ -160,6 +160,7 @@
                     android:layout_marginTop="15dp"
                     android:background="@drawable/edit_text"
                     android:padding="10dp"
+                    android:inputType="textPassword"
                     >
 
                 </EditText>
@@ -169,7 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btnSalvar"
-                    android:hint="Entrar"
+                    android:hint="Cadastrar"
                     android:inputType="textPassword"
                     android:layout_marginTop="15dp"
                     android:textColorHint="@color/white"
