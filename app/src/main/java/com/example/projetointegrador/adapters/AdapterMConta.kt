@@ -1,21 +1,22 @@
 package com.example.projetointegrador.adapters
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.projetointegrador.MinhaConta
+import com.example.projetointegrador.ModalPostagemFragment
 import com.example.projetointegrador.R
 import com.example.projetointegrador.models.ImageItem
 
 
 class AdapterMConta(var contexto: MinhaConta, var listaImagens:List<ImageItem>):RecyclerView.Adapter<AdapterMConta.MeuViewHolder> () {
 
-
-    var posicaoClicada:Int = -1
 
     class MeuViewHolder(itemView: View, val contexto: Context) : RecyclerView.ViewHolder(itemView) {
 
@@ -35,6 +36,20 @@ class AdapterMConta(var contexto: MinhaConta, var listaImagens:List<ImageItem>):
         Glide.with(contexto)
             .load(imageItem.imageUrl)
             .into(holder.estiloImagem)
+
+
+        holder.estiloImagem.setOnClickListener{
+            val modalFragment = ModalPostagemFragment()
+            val args = Bundle()
+            val fragmentManager = (contexto as AppCompatActivity).supportFragmentManager
+
+            args.putString("image_url", imageItem.imageUrl)  // Passe a URL da imagem como argumento
+            modalFragment.arguments = args
+
+            modalFragment.show(fragmentManager, "MEU_MODAL")
+        }
+
+
     }
 
     override fun getItemCount(): Int {

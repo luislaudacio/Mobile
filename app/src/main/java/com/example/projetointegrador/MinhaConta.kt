@@ -2,6 +2,7 @@ package com.example.projetointegrador
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -62,6 +63,12 @@ class MinhaConta : AppCompatActivity() {
 
     private fun sairContaUsuario() {
         var intent: Intent = Intent(this, MainActivity:: class.java)
+        startActivity(intent)
+    }
+
+    fun feedGer(view: View) {
+        var intent: Intent = Intent(this, FeedGeral:: class.java)
+        intent.putExtra("usuario", usuario)
         startActivity(intent)
     }
 

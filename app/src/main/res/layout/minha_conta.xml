@@ -28,6 +28,7 @@
             android:layout_gravity="left"
             android:gravity="left"
             android:layout_weight="90"
+            android:onClick="feedGer"
             >
 
         </TextView>

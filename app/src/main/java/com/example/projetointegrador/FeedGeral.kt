@@ -1,7 +1,9 @@
 package com.example.projetointegrador
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +41,6 @@ class FeedGeral : AppCompatActivity() {
 
         configTabLayout()
 
-        textoPerfil.setOnClickListener{Navigation.redirectToMainActivity(this)}
 
     }
 
@@ -66,6 +67,12 @@ class FeedGeral : AppCompatActivity() {
         }.attach()
 
 
+    }
+
+    fun redMinhaConta(view: View) {
+        var intent: Intent = Intent(this, MinhaConta:: class.java)
+        intent.putExtra("usuario", usuario)
+        startActivity(intent)
     }
 
 
