@@ -12,10 +12,10 @@ import com.bumptech.glide.Glide
 import com.example.projetointegrador.MinhaConta
 import com.example.projetointegrador.ModalPostagemFragment
 import com.example.projetointegrador.R
-import com.example.projetointegrador.models.ImageItem
+import com.example.projetointegrador.models.modalItem
 
 
-class AdapterMConta(var contexto: MinhaConta, var listaImagens:List<ImageItem>):RecyclerView.Adapter<AdapterMConta.MeuViewHolder> () {
+class AdapterMConta(var contexto: MinhaConta, var listaImagens:List<modalItem>):RecyclerView.Adapter<AdapterMConta.MeuViewHolder> () {
 
 
     class MeuViewHolder(itemView: View, val contexto: Context) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +31,8 @@ class AdapterMConta(var contexto: MinhaConta, var listaImagens:List<ImageItem>):
     }
 
     override fun onBindViewHolder(holder: MeuViewHolder, position: Int) {
-        val imageItem = listaImagens[position]
+        val imageItem = listaImagens[position].image
+        val buttonActive = listaImagens[position].nomeUsuario == listaImagens[position].Post.usuario;
 
         Glide.with(contexto)
             .load(imageItem.imageUrl)
@@ -39,7 +40,7 @@ class AdapterMConta(var contexto: MinhaConta, var listaImagens:List<ImageItem>):
 
 
         holder.estiloImagem.setOnClickListener{
-            val modalFragment = ModalPostagemFragment()
+            val modalFragment = ModalPostagemFragment(buttonActive, listaImagens[position].Post, listaImagens[position].nomeUsuario, listaImagens[position].tokenUsuario)
             val args = Bundle()
             val fragmentManager = (contexto as AppCompatActivity).supportFragmentManager
 

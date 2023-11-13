@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projetointegrador.adapters.AdapterFragmentSG
 import com.example.projetointegrador.models.ImageItem
+import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.Usuario
+import com.example.projetointegrador.models.itemGetPost
+import com.example.projetointegrador.models.modalItem
 
 
-class SeguindoFragment : Fragment() {
+class SeguindoFragment (private var posts: List<Post>, private var usuario: Usuario) : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
 
@@ -21,12 +24,27 @@ class SeguindoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_seguindo, container, false)
+        val listaImagens = mutableListOf<modalItem>()
 
-        val listaImagens = listOf(
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-            ImageItem("https://i.pinimg.com/originals/49/ce/25/49ce259a44c02bb4deb037dac8b9a54a.jpg"),
-        )
+        if (posts != null) {
+            fun realizarValidacoes(post: Post) {
+                if (!usuario.seguindo.contains(post.usuario)) {
+                    return;
+                }
+
+                listaImagens.add(
+                    modalItem(
+                        image = ImageItem(post.pathFotoPost),
+                        nomeUsuario = usuario.usuario,
+                        tokenUsuario = usuario.access_token,
+                        Post = post
+                    )
+                )
+            }
+
+            posts.forEach { post -> realizarValidacoes(post) }
+        }
+
 
         val adapter = AdapterFragmentSG(requireContext(), listaImagens)
 

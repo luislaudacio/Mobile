@@ -9,12 +9,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projetointegrador.NavigationUtils.Navigation
 import com.example.projetointegrador.adapters.AdapterMConta
 import com.example.projetointegrador.models.ImageItem
+import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.Usuario
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
+import com.example.projetointegrador.models.modalItem
 
 class MinhaConta : AppCompatActivity() {
     lateinit var usuario: Usuario
@@ -33,11 +32,16 @@ class MinhaConta : AppCompatActivity() {
         nomeMinhaConta = findViewById(R.id.nomeMinhaConta)
         nomeMinhaConta.text = usuario.usuario
 
-        val listaImagens = mutableListOf<ImageItem>()
+        val listaImagens = mutableListOf<modalItem>()
 
         if (usuario.posts != null) {
             usuario.posts.forEach { post ->
-                listaImagens.add(ImageItem(post.pathFotoPost))
+                listaImagens.add(modalItem(
+                    image = ImageItem(post.pathFotoPost),
+                    nomeUsuario = usuario.usuario,
+                    tokenUsuario = usuario.access_token,
+                    Post = post
+                ))
             }
         }
 

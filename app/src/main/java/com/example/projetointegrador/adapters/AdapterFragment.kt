@@ -14,8 +14,9 @@ import com.example.projetointegrador.ModalFragment
 import com.example.projetointegrador.ModalPostagemFragment
 import com.example.projetointegrador.R
 import com.example.projetointegrador.models.ImageItem
+import com.example.projetointegrador.models.modalItem
 
-class AdapterFragment(private val context: Context,private val listaImagens: List<ImageItem>) : RecyclerView.Adapter<AdapterFragment.MeuViewHolder> () {
+class AdapterFragment(private val context: Context,private val listaImagens: List<modalItem>) : RecyclerView.Adapter<AdapterFragment.MeuViewHolder> () {
 
     class MeuViewHolder(itemView: View, val contexto: Context) : RecyclerView.ViewHolder(itemView) {
 
@@ -30,14 +31,15 @@ class AdapterFragment(private val context: Context,private val listaImagens: Lis
     }
 
     override fun onBindViewHolder(holder: MeuViewHolder, position: Int) {
-        val imageItem = listaImagens[position]
+        val imageItem = listaImagens[position].image
+        val buttonActive = listaImagens[position].nomeUsuario == listaImagens[position].Post.usuario;
 
         Glide.with(context)
             .load(imageItem.imageUrl)
             .into(holder.estiloImagem)
 
         holder.estiloImagem.setOnClickListener{
-            val modalFragment = ModalPostagemFragment()
+            val modalFragment = ModalPostagemFragment(buttonActive, listaImagens[position].Post, listaImagens[position].nomeUsuario, listaImagens[position].tokenUsuario )
             val args = Bundle()
             val fragmentManager = (context as AppCompatActivity).supportFragmentManager
 

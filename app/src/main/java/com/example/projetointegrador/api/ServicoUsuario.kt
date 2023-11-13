@@ -1,6 +1,8 @@
 package com.example.projetointegrador.api
 
+import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.Usuario
+import com.example.projetointegrador.models.itemGetPost
 
 import retrofit2.Call
 import retrofit2.http.*
@@ -15,17 +17,12 @@ interface ServicoUsuario {
 
     @GET("user/email/{email}")
     fun getUserInfo(@Path("email") email: String, @Header("Authorization") token: String): Call<Usuario>
-//
-//    @GET("contatos")
-//    fun getAllContatos(): Call<List<Contato>>
-//
-//    @POST("contatos")
-//    fun createContato(@Body contato: Contato): Call<Contato>
-//
-//    @PUT("contatos/{id}")
-//    fun updateContato(@Path("id") id: Int, @Body contato: Contato): Call<Contato>
-//
-//    @DELETE("contatos/{id}")
-//    fun deleteContato(@Path("id") id: Int): Call<Void>
+
+    @GET("post/list")
+    fun getAllPosts(@Header("Authorization") token: String): Call<List<itemGetPost>>
+
+    @POST("post/like/{idPost}")
+    fun likePost(@Path("idPost") idPost: String, @Header("Authorization") token: String, @Body body: Map<String, String>): Call<Void>
+
 }
 

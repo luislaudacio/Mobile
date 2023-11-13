@@ -23,14 +23,14 @@ data class Usuario (
 @Serializable
 data class Post(
     val usuario: String,
-    val pathFotoPost: String,
-    val descricaoPost: String,
-    val comentarios: List<Comentario>,
-    val tags: List<String>,
-    val curtidas: List<String>,
-    val criadoEm: String,
-    val atualizadoEm: String,
-    val _id: String
+    var pathFotoPost: String,
+    var descricaoPost: String,
+    var comentarios: List<Comentario>,
+    var tags: List<String>,
+    var curtidas: List<String>,
+    var criadoEm: String,
+    var atualizadoEm: String,
+    var _id: String
 ):java.io.Serializable
 
 @Serializable
@@ -41,3 +41,19 @@ data class Comentario(
     val atualizadoEm: String,
     val _id: String
 ):java.io.Serializable
+
+@Serializable
+data class modalItem(
+    var image: ImageItem,
+    var nomeUsuario: String,
+    var Post: Post,
+    var tokenUsuario: String
+):java.io.Serializable
+
+@Serializable
+data class itemGetPost(
+    val _id: String,
+    val usuario: String,
+    val posts: List<Post>,
+):java.io.Serializable
+
