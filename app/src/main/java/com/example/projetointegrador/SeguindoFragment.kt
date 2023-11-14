@@ -24,7 +24,7 @@ class SeguindoFragment (private var posts: List<Post>, private var usuario: Usua
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_seguindo, container, false)
-        val listaImagens = mutableListOf<modalItem>()
+        var listaImagens = mutableListOf<modalItem>()
 
         if (posts != null) {
             fun realizarValidacoes(post: Post) {

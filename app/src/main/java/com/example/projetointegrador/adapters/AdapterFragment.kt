@@ -14,9 +14,18 @@ import com.example.projetointegrador.ModalFragment
 import com.example.projetointegrador.ModalPostagemFragment
 import com.example.projetointegrador.R
 import com.example.projetointegrador.models.ImageItem
+import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.modalItem
 
-class AdapterFragment(private val context: Context,private val listaImagens: List<modalItem>) : RecyclerView.Adapter<AdapterFragment.MeuViewHolder> () {
+
+
+
+class AdapterFragment(private val context: Context, private var listaImagens: MutableList<modalItem>) : RecyclerView.Adapter<AdapterFragment.MeuViewHolder> (), OnPostInteractionListener {
+    lateinit var modalFragment: ModalPostagemFragment
+    override fun onPostDeleted(post: Post) {
+        removerItem(post)
+        dismissModal()
+    }
 
     class MeuViewHolder(itemView: View, val contexto: Context) : RecyclerView.ViewHolder(itemView) {
 
@@ -39,7 +48,7 @@ class AdapterFragment(private val context: Context,private val listaImagens: Lis
             .into(holder.estiloImagem)
 
         holder.estiloImagem.setOnClickListener{
-            val modalFragment = ModalPostagemFragment(buttonActive, listaImagens[position].Post, listaImagens[position].nomeUsuario, listaImagens[position].tokenUsuario )
+            modalFragment = ModalPostagemFragment(buttonActive, listaImagens[position].Post, listaImagens[position].nomeUsuario, listaImagens[position].tokenUsuario, this )
             val args = Bundle()
             val fragmentManager = (context as AppCompatActivity).supportFragmentManager
 
@@ -54,6 +63,17 @@ class AdapterFragment(private val context: Context,private val listaImagens: Lis
         return this.listaImagens.size
     }
 
+    private fun dismissModal() {
+       modalFragment?.dismiss()
+    }
+    private fun removerItem(post: Post) {
+        val item = listaImagens.firstOrNull { it.Post == post }
+
+        if (item != null) {
+            listaImagens.remove(item)
+            notifyDataSetChanged()
+        }
+    }
 
 
 

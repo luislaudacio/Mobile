@@ -3,6 +3,10 @@ package com.example.projetointegrador.api
 import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.Usuario
 import com.example.projetointegrador.models.itemGetPost
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 import retrofit2.Call
 import retrofit2.http.*
@@ -24,5 +28,17 @@ interface ServicoUsuario {
     @POST("post/like/{idPost}")
     fun likePost(@Path("idPost") idPost: String, @Header("Authorization") token: String, @Body body: Map<String, String>): Call<Void>
 
+    // /post/remove/65415e074f36136a327856fd
+
+
+    @DELETE("post/remove/{idPost}")
+    fun deletePost(@Path("idPost") idPost: String, @Header("Authorization") token: String): Call<Void>
+
+    @Multipart
+    @POST("post/upload")
+    fun uploadImage(
+        @Part file: MultipartBody.Part,
+        @Header("Authorization") token: String
+    ): Call<JsonObject>
 }
 

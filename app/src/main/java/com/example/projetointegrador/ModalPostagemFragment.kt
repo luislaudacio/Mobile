@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
+import com.example.projetointegrador.adapters.OnPostInteractionListener
 import com.example.projetointegrador.api.RetrofitClient
 import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.Usuario
@@ -23,7 +24,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ModalPostagemFragment(private val buttonActive: Boolean, private var post: Post, private val nomeUsuarioLogado: String, private val token_usuario: String) : DialogFragment() {
+class ModalPostagemFragment(
+    private val buttonActive: Boolean,
+    private var post: Post,
+    private val nomeUsuarioLogado: String,
+    private val token_usuario: String,
+    private val onPostInteractionListener: OnPostInteractionListener
+) : DialogFragment() {
     lateinit var iconHeart: ImageView
     lateinit var curtidas: TextView
 
@@ -49,6 +56,9 @@ class ModalPostagemFragment(private val buttonActive: Boolean, private var post:
 
         buttonDeletar.visibility = if (!buttonActive) View.INVISIBLE else View.VISIBLE
 
+        if (buttonActive) {
+            buttonDeletar.setOnClickListener {deletarPost()}
+        }
 
         // Carregue a imagem usando uma biblioteca como Glide
         if (!imageUrl.isNullOrEmpty()) {
@@ -65,6 +75,28 @@ class ModalPostagemFragment(private val buttonActive: Boolean, private var post:
         val width = (resources.displayMetrics.widthPixels * 1.00).toInt()
         val height = (resources.displayMetrics.widthPixels * 1.80).toInt()
         dialog?.window?.setLayout(width, height)
+    }
+
+    private fun deletarPost() {
+        val retrofitCli: RetrofitClient = RetrofitClient()
+        val call = retrofitCli.servicoUsuario.deletePost(post._id, "Bearer ${token_usuario}")
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, infosResponse: Response<Void>) {
+                if (!infosResponse.isSuccessful) {
+                    Log.e("Erro Desconhecido! 4", "etr: " + infosResponse)
+                    return
+                } else {
+                    Log.e("Post Deletado", "Deletado" )
+                    onPostInteractionListener.onPostDeleted(post)
+
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("Falha ao deletar post", "onFailure: " + t)
+                return
+            }
+        })
     }
 
     private fun curtirFoto (like: Boolean) {
@@ -100,7 +132,7 @@ class ModalPostagemFragment(private val buttonActive: Boolean, private var post:
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.e("Falha ao buscar info", "onFailure: " + t)
+                Log.e("Falha ao dar like/deslike", "onFailure: " + t)
                 return
             }
         })

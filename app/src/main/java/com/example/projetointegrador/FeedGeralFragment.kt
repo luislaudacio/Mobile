@@ -26,7 +26,7 @@ class FeedGeralFragment (private var posts: List<Post>, private var usuario: Usu
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_feed_geral, container, false)
-        val listaImagens = mutableListOf<modalItem>()
+        var listaImagens = mutableListOf<modalItem>()
 
         if (posts != null) {
             posts.forEach { post ->
