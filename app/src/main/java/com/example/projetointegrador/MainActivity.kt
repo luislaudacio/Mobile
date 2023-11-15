@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
 
 
         usuario = Usuario(
+            _id = "",
             message = "",
             access_token = "",
             email = txtEmail.text.toString(),
@@ -96,6 +97,7 @@ class MainActivity : AppCompatActivity() {
                                 if (infoResponse != null) {
                                     Log.i("Informacoes Usuario", "onResponse: " + infoResponse.toString())
                                     Toast.makeText(this@MainActivity, "Usuario Logado", Toast.LENGTH_LONG).show()
+                                    usuario._id = infoResponse._id
                                     usuario.criadoEm = infoResponse.criadoEm
                                     usuario.usuario = infoResponse.usuario
                                     usuario.dataNasc = infoResponse.dataNasc

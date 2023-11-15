@@ -2,6 +2,7 @@ package com.example.projetointegrador
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.example.projetointegrador.api.RetrofitClient
 import com.example.projetointegrador.models.Usuario
@@ -26,24 +28,39 @@ import retrofit2.Call
 import retrofit2.Callback
 import java.io.File
 import retrofit2.Response
+import android.Manifest
+import android.graphics.Color
+import android.webkit.MimeTypeMap
+import android.widget.EditText
+import android.widget.ImageView
+import androidx.core.app.ActivityCompat
 
 
 class ModalFragment (private val usuario: Usuario): DialogFragment() {
     private val PICK_IMAGE_REQUEST = 1
     private var nomeImagemSelecionada: String? = null
     private lateinit var imagemSelecionada: Uri
+    private var MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1
+    lateinit var comentarioTexto: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE)
+        }
 
+
+
+        Log.i("Permissão", "onCreateView chamado")
         val view = inflater.inflate(R.layout.fragment_modal, container, false)
 
         val btEscolherImagem: Button = view.findViewById(R.id.btEscolherImagem)
         val nomeFoto:TextView = view.findViewById(R.id.nomeFoto)
         val btPostar: Button = view.findViewById(R.id.btnPostar)
+        comentarioTexto = view.findViewById(R.id.comentarioTexto)
 
         btEscolherImagem.setOnClickListener{
             val galeriaIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -105,53 +122,83 @@ class ModalFragment (private val usuario: Usuario): DialogFragment() {
         }
 
         val retrofitCli: RetrofitClient = RetrofitClient()
+        try {
+            val cacheDir =  requireContext().cacheDir
+            val file: File? = File(cacheDir, nomeImagemSelecionada)
 
-        val file: File? = obterArquivoDaUri(imagemSelecionada)
-
-        if (file == null) {
-            Log.e("ModalFragment", "Erro ao obter o arquivo da imagem selecionada")
-            return
-        }
-        val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-
-        val call = retrofitCli.servicoUsuario.uploadImage(body, "Bearer ${usuario.access_token}")
-        call.enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, infosResponse: Response<JsonObject>) {
-                if (!infosResponse.isSuccessful) {
-                    Log.e("ModalFragment", "response: " + infosResponse)
-                    return
-                }
-                val responseBody = infosResponse.body()
-                if (responseBody != null) {
-                    Log.d("ModalFragment", "Upload da imagem bem-sucedido. Resposta: $responseBody")
-                }
-            }
-
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                Log.e("ModalFragment", "Falha na requisição: ${t.message}")
+            if (file == null) {
+                Log.e("ModalFragment", "Erro ao obter o arquivo da imagem selecionada")
                 return
             }
-        })
-    }
 
-    private fun obterArquivoDaUri(uri: Uri): File? {
-        try {
-            val inputStream = requireContext().contentResolver.openInputStream(uri)
+            val inputStream = requireContext().contentResolver.openInputStream(imagemSelecionada)
+
             inputStream?.use { input ->
-                val bytes = input.readBytes()
-                val file = File.createTempFile("imagem", null, requireContext().cacheDir)
                 file.outputStream().use { output ->
-                    output.write(bytes)
+                    input.copyTo(output)
                 }
-                return file
             }
+
+            val type = requireContext().contentResolver.getType(imagemSelecionada)
+            val requestFile = file.asRequestBody(type?.toMediaTypeOrNull())
+            val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+            val call = retrofitCli.servicoUsuario.uploadImage(body, "Bearer ${usuario.access_token}")
+            call.enqueue(object : Callback<JsonObject> {
+                override fun onResponse(
+                    call: Call<JsonObject>,
+                    infosResponse: Response<JsonObject>
+                ) {
+                    if (!infosResponse.isSuccessful) {
+                        Log.e("ModalFragment", "response: " + infosResponse)
+                        return
+                    }
+
+                    val responseBody = infosResponse.body()
+                    if (responseBody != null) {
+                        val imageUrl = responseBody.getAsJsonPrimitive("url").asString
+                        Log.d("ModalFragment",  "Upload da imagem bem-sucedido. Resposta: ${responseBody}")
+
+                        val retrofitCli: RetrofitClient = RetrofitClient()
+                        val call = retrofitCli.servicoUsuario.createPost(usuario._id, "Bearer ${usuario.access_token}", mapOf(
+                            "usuario" to usuario.usuario,
+                            "pathFotoPost" to imageUrl,
+                            "descricaoPost" to comentarioTexto.text.toString()
+                        ))
+
+                        call.enqueue(object : Callback<JsonObject> {
+
+                            override fun onResponse(call: Call<JsonObject>, criarPost: Response<JsonObject>) {
+                                if (!criarPost.isSuccessful) {
+                                    Log.e("Criar POST", "Erro ao Criar Post: " + criarPost)
+                                    return
+                                }
+
+                                val criarPostBody = criarPost.body()
+                                if (criarPostBody != null) {
+                                    Log.e("Criar POST",  "Post Criado: ${criarPostBody}")
+
+                                    Log.e("Criar POST", "Post Criado")
+                                    return
+                                }
+                            }
+
+                            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                Log.e("Criar POST", "Erro ao criar post: " + t)
+                                return
+                            }
+                        })
+
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                    Log.e("ModalFragment", "Falha na requisição: ${t.message}")
+                    return
+                }
+            })
         } catch (e: Exception) {
-            Log.e("ModalFragment", "Erro ao obter o arquivo da Uri: ${e.message}")
+            Log.e("ModalFragment", "Erro ao processar a imagem: ${e.message}")
         }
-        return null
     }
-
-
-
 }

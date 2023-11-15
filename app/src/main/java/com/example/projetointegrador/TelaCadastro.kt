@@ -120,6 +120,7 @@ class TelaCadastro : AppCompatActivity() {
         }
 
         usuario = Usuario(
+            _id = "",
             message = "",
             access_token = "",
             email = txtEmail.text.toString(),

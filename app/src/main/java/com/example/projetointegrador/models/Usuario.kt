@@ -7,6 +7,7 @@ import java.util.Date
 
 @Serializable
 data class Usuario (
+    var _id: String,
     var message: String,
     var access_token: String,
     var email: String,
