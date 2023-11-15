@@ -49,6 +49,21 @@
 
             </Button>
 
+
+            <TextView
+                android:id="@+id/UsuarioPostagem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="teste"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="65dp"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                >
+
+            </TextView>
+
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,35 +98,16 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="55dp"
-            android:orientation="horizontal"
+            android:layout_height="170dp"
+            android:layout_marginTop="25dp"
+            android:id="@+id/RvComentarios"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Benicio: "
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:id="@+id/User"
-                >
 
-            </TextView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TESTE"
-                android:textSize="16dp"
-                android:id="@+id/mensagemUsuario"
-                >
-
-            </TextView>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.recyclerview.widget.RecyclerView>
 
 
 
@@ -119,7 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="10dp"
             android:weightSum="100"
             >
 
