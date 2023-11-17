@@ -87,9 +87,9 @@ class ModalFragment (private val usuario: Usuario): DialogFragment() {
             nomeImagemSelecionada = obterNomeImagem(imagemSelecionada)
 
             if (nomeImagemSelecionada != null) {
-                val nomeFoto: TextView? = view?.findViewById(R.id.nomeFoto)
-                nomeFoto?.text = nomeImagemSelecionada
-                nomeFoto?.visibility = View.VISIBLE
+                    val nomeFoto: TextView? = view?.findViewById(R.id.nomeFoto)
+                    nomeFoto?.text = nomeImagemSelecionada
+                    nomeFoto?.visibility = View.VISIBLE
             }
 
         }
