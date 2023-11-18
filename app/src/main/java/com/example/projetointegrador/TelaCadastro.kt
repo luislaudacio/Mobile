@@ -16,7 +16,9 @@ import kotlinx.serialization.json.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class TelaCadastro : AppCompatActivity() {
@@ -115,24 +117,13 @@ class TelaCadastro : AppCompatActivity() {
             return;
         }
 
-        usuario = Usuario(
-            _id = "",
-            message = "",
-            access_token = "",
-            email = txtEmail.text.toString(),
-            senha = txtSenha.text.toString(),
-            usuario = txtUsuario.text.toString(),
-            dataNasc= txtData.text.toString(),
-            dataAtual = "",
-            seguidores= emptyArray(),
-            seguindo = emptyArray(),
-            criadoEm= "",
-            posts= emptyList()
-        )
-
         val retrofitCli: RetrofitClient = RetrofitClient()
-        retrofitCli.servicoUsuario.userRegister(usuario)
-            .enqueue(object : Callback<Usuario> {
+        retrofitCli.servicoUsuario.userRegister(mapOf(
+            "email" to txtEmail.text.toString(),
+            "senha" to txtSenha.text.toString(),
+            "usuario" to txtUsuario.text.toString(),
+            "dataNasc" to formatarData(txtData.text.toString()),
+        )).enqueue(object : Callback<Usuario> {
 
                 override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
                     if (!response.isSuccessful) {
@@ -170,6 +161,14 @@ class TelaCadastro : AppCompatActivity() {
                     return
                 }
             })
+    }
+
+    fun formatarData(data: String): String {
+        val formatoEntrada = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formatoSaida = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val dataFormatada: Date = formatoEntrada.parse(data) ?: Date()
+        return formatoSaida.format(dataFormatada)
     }
 
 }
