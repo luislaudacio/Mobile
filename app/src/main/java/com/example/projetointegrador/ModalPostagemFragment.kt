@@ -1,33 +1,31 @@
 package com.example.projetointegrador
 
-import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.projetointegrador.adapters.OnPostInteractionListener
+import com.example.projetointegrador.adapters.AdapterComentarios
+import com.example.projetointegrador.services.OnPostInteractionListener
 import com.example.projetointegrador.api.RetrofitClient
 import com.example.projetointegrador.models.Comentario
 import com.example.projetointegrador.models.Post
-import com.example.projetointegrador.models.Usuario
+import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 class ModalPostagemFragment(
     private val buttonActive: Boolean,
@@ -38,6 +36,9 @@ class ModalPostagemFragment(
 ) : DialogFragment() {
     lateinit var iconHeart: ImageView
     lateinit var curtidas: TextView
+    lateinit var textoComentario : EditText
+    lateinit var comentariosArtificiais: MutableList<Comentario>
+    private lateinit var adapterComentarios: AdapterComentarios
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,27 +46,31 @@ class ModalPostagemFragment(
     ): View? {
         val view = inflater.inflate(R.layout.fragment_modal_postagem, container, false)
         val buttonDeletar = view.findViewById<Button>(R.id.btnDeletar)
+        val buttonCriarComentario = view.findViewById<Button>(R.id.enviarComentario)
         val imagemModal = view.findViewById<ImageView>(R.id.fotoModal)
         val usuarioPostagem: TextView = view.findViewById(R.id.UsuarioPostagem)
         val imageUrl = arguments?.getString("image_url")
+        comentariosArtificiais = mutableListOf<Comentario>()
+        textoComentario =  view.findViewById(R.id.textComment)
 
-        val comentariosArtificiais = listOf(
-            Comentario("Usuário1", "Comentário 1", "", "", ""),
-            Comentario("Usuário2", "Comentário 2","", "", ""),
-            Comentario("Usuário3", "Comentário 3","", "", ""),
-            Comentario("Usuário4", "Comentário 4","", "", ""),
-            Comentario("Usuário5", "Comentário 5","", "", ""),
-            Comentario("Usuário6", "Comentário 6","", "", ""),
-            Comentario("Usuário7", "Comentário 7","", "", ""),
-            Comentario("Usuário8", "Comentário 8","", "", ""),
-            Comentario("Usuário9", "Comentário 9","", "", ""),
-            Comentario("Usuário10", "Comentário 10","", "", ""),
-            Comentario("Usuário11", "Comentário 11","", "", ""),
-            Comentario("Usuário12", "Comentário 12","", "", ""),
-        )
+        if (post.comentarios != null) {
+            fun realizarValidacoes(comentario: Comentario) {
+                comentariosArtificiais.add(
+                    Comentario(
+                        usuario = comentario.usuario,
+                        comentarioTexto = comentario.comentarioTexto,
+                        criadoEm = comentario.criadoEm,
+                        atualizadoEm = comentario.atualizadoEm,
+                        _id = comentario._id
+                    )
+                )
+            }
+
+            post.comentarios.forEach { post -> realizarValidacoes(post) }
+        }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.RvComentarios)
-        val AdapterComentarios = AdapterComentarios(requireContext(), comentariosArtificiais)
+        adapterComentarios = AdapterComentarios(requireContext(), comentariosArtificiais)
         val espacamento = resources.getDimensionPixelSize(R.dimen.espacamento_entre_itens)
 
         recyclerView.addItemDecoration(SpaceItemDecoration(espacamento))
@@ -74,7 +79,7 @@ class ModalPostagemFragment(
         iconHeart = view.findViewById<ImageView>(R.id.iconHeart)
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
-        recyclerView.adapter = AdapterComentarios(requireContext(), comentariosArtificiais)
+        recyclerView.adapter = adapterComentarios
 
 
         curtidas.text = post.curtidas.size.toString()
@@ -88,12 +93,14 @@ class ModalPostagemFragment(
 
         buttonDeletar.visibility = if (!buttonActive) View.GONE else View.VISIBLE
         usuarioPostagem.visibility = if (buttonActive) View.GONE else View.VISIBLE
+        usuarioPostagem.text = post.usuario
 
         if (buttonActive) {
             buttonDeletar.setOnClickListener {deletarPost()}
         }
 
-        // Carregue a imagem usando uma biblioteca como Glide
+        buttonCriarComentario.setOnClickListener {criarComentario()}
+
         if (!imageUrl.isNullOrEmpty()) {
             Glide.with(this)
                 .load(imageUrl)
@@ -117,9 +124,11 @@ class ModalPostagemFragment(
             override fun onResponse(call: Call<Void>, infosResponse: Response<Void>) {
                 if (!infosResponse.isSuccessful) {
                     Log.e("Erro Desconhecido! 4", "etr: " + infosResponse)
+                    Toast.makeText(requireContext(), "Falha ao Deletar POST", Toast.LENGTH_LONG).show()
                     return
                 } else {
                     Log.e("Post Deletado", "Deletado" )
+                    Toast.makeText(requireContext(), "POST DELETADO!", Toast.LENGTH_LONG).show()
                     onPostInteractionListener.onPostDeleted(post)
 
                 }
@@ -127,6 +136,7 @@ class ModalPostagemFragment(
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("Falha ao deletar post", "onFailure: " + t)
+                Toast.makeText(requireContext(), "Falha ao deletar post!", Toast.LENGTH_LONG).show()
                 return
             }
         })
@@ -139,6 +149,7 @@ class ModalPostagemFragment(
             override fun onResponse(call: Call<Void>, infosResponse: Response<Void>) {
                 if (!infosResponse.isSuccessful) {
                     Log.e("Erro Desconhecido! 3", "etr: " + infosResponse)
+                    Toast.makeText(requireContext(), "Erro ao deixar/tirar o like!", Toast.LENGTH_LONG).show()
                     return
                 } else {
                     if (like) {
@@ -151,6 +162,7 @@ class ModalPostagemFragment(
                         curtidas.text = post.curtidas.size.toString()
                         iconHeart.setColorFilter(Color.parseColor("#000000"))
                         iconHeart.setOnClickListener {curtirFoto(false)}
+                        Toast.makeText(requireContext(), "Você tirou seu Like!", Toast.LENGTH_LONG).show()
                         return;
                     }
 
@@ -158,6 +170,7 @@ class ModalPostagemFragment(
                     post.curtidas = novaListaCurtidas
                     Log.e("like!", "Curtioooooo!")
 
+                    Toast.makeText(requireContext(), "Você deixou seu Like!", Toast.LENGTH_LONG).show()
                     curtidas.text = post.curtidas.size.toString()
                     iconHeart.setColorFilter(Color.parseColor("#FF4081"))
                     iconHeart.setOnClickListener {curtirFoto(true)}
@@ -166,6 +179,56 @@ class ModalPostagemFragment(
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("Falha ao dar like/deslike", "onFailure: " + t)
+                Toast.makeText(requireContext(), "Erro ao deixar/tirar o like!", Toast.LENGTH_LONG).show()
+                return
+            }
+        })
+    }
+
+    private fun criarComentario() {
+        if (textoComentario.text.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "Você deve preencher o campo de comentario", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val retrofitCli: RetrofitClient = RetrofitClient()
+        val call = retrofitCli.servicoUsuario.createComment(post._id, "Bearer ${token_usuario}", mapOf(
+            "usuario" to nomeUsuarioLogado,
+            "comentarioTexto" to textoComentario.text.toString(),
+        ))
+
+        call.enqueue(object : Callback<JsonObject> {
+          override fun onResponse(call: Call<JsonObject>, criarPost: Response<JsonObject>) {
+                if (!criarPost.isSuccessful) {
+                    Log.e("Criar Comentario", "Erro ao Criar Comentario: " + criarPost)
+                    Toast.makeText(requireContext(), "Erro ao Criar Comentario", Toast.LENGTH_LONG).show()
+                    return
+                }
+
+                val criarPostBody = criarPost.body()
+                if (criarPostBody != null) {
+                    Log.e("Criar Comentario",  "Comentario Criado: ${criarPostBody}")
+                    Toast.makeText(requireContext(), "Comentario Criado!", Toast.LENGTH_LONG).show()
+                    val newComment = Comentario(
+                        usuario = nomeUsuarioLogado,
+                        comentarioTexto = textoComentario.text.toString(),
+                        criadoEm = "",
+                        atualizadoEm = "",
+                        _id = ""
+                    )
+
+                    comentariosArtificiais.add(newComment)
+                    post.comentarios = (post.comentarios ?: emptyList()).toMutableList().apply { add(newComment) }.toList()
+
+                    textoComentario.text = Editable.Factory.getInstance().newEditable("")
+                    adapterComentarios.notifyDataSetChanged()
+                    return
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                Toast.makeText(requireContext(), "Erro ao Criar Comentario", Toast.LENGTH_LONG).show()
+                Log.e("Criar Comentario", "Erro ao criar Comentario: " + t)
                 return
             }
         })
@@ -176,14 +239,10 @@ class ModalPostagemFragment(
             outRect: Rect, view: View,
             parent: RecyclerView, state: RecyclerView.State
         ) {
-            // Adiciona espaço à parte inferior de cada item, exceto o último
             if (parent.getChildAdapterPosition(view) != parent.adapter?.itemCount?.minus(1)) {
                 outRect.bottom = space
             }
         }
-
-
-
     }
 
 }

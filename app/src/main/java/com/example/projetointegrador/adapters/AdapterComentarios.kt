@@ -1,14 +1,12 @@
-package com.example.projetointegrador
+package com.example.projetointegrador.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projetointegrador.adapters.AdapterMConta
+import com.example.projetointegrador.R
 import com.example.projetointegrador.models.Comentario
 
 class AdapterComentarios(private val contexto: Context, private val comentarios: List<Comentario>):
@@ -25,7 +23,7 @@ class AdapterComentarios(private val contexto: Context, private val comentarios:
         var inflater: LayoutInflater = LayoutInflater.from(contexto)
         var view = inflater.inflate(R.layout.lista_comentarios, parent, false)
 
-        return AdapterComentarios.MeuViewHolder(view, contexto)
+        return MeuViewHolder(view, contexto)
     }
 
     override fun onBindViewHolder(holder: MeuViewHolder, position: Int) {

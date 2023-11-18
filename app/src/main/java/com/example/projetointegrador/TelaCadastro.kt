@@ -9,18 +9,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.media3.common.Format
 import com.example.projetointegrador.api.RetrofitClient
-import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.Usuario
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class TelaCadastro : AppCompatActivity() {

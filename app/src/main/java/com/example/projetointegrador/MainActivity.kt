@@ -9,15 +9,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.projetointegrador.api.RetrofitClient
-import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.Usuario
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 

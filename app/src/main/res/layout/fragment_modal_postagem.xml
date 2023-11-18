@@ -120,6 +120,7 @@
             >
 
             <EditText
+                android:id="@+id/textComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Comentário..."
@@ -139,6 +140,7 @@
                 android:background="@android:color/transparent"
                 android:hint="Enviar"
                 android:textSize="16dp"
+                android:id="@+id/enviarComentario"
 
                 >
 

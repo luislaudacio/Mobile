@@ -11,7 +11,6 @@ import com.example.projetointegrador.adapters.AdapterFragmentSG
 import com.example.projetointegrador.models.ImageItem
 import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.Usuario
-import com.example.projetointegrador.models.itemGetPost
 import com.example.projetointegrador.models.modalItem
 
 

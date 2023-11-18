@@ -1,4 +1,4 @@
-package com.example.projetointegrador.adapters
+package com.example.projetointegrador.services
 
 import com.example.projetointegrador.models.Post
 
