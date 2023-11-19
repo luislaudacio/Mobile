@@ -45,7 +45,7 @@ class SeguindoFragment (private var posts: List<Post>, private var usuario: Usua
         }
 
 
-        val adapter = AdapterFragmentSG(requireContext(), listaImagens)
+        val adapter = AdapterFragmentSG(requireContext(), listaImagens, usuario)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.recyclerSG)
 

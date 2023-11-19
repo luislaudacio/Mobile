@@ -12,10 +12,11 @@ import com.bumptech.glide.Glide
 import com.example.projetointegrador.ModalPostagemFragment
 import com.example.projetointegrador.R
 import com.example.projetointegrador.models.Post
+import com.example.projetointegrador.models.Usuario
 import com.example.projetointegrador.models.modalItem
 import com.example.projetointegrador.services.OnPostInteractionListener
 
-class AdapterFragmentSG(private val context: Context, private var listaImagens: MutableList<modalItem>) : RecyclerView.Adapter<AdapterFragmentSG.MeuViewHolder> (),
+class AdapterFragmentSG(private val context: Context, private var listaImagens: MutableList<modalItem>, private var usuario: Usuario) : RecyclerView.Adapter<AdapterFragmentSG.MeuViewHolder> (),
     OnPostInteractionListener {
     lateinit var modalFragment: ModalPostagemFragment
     override fun onPostDeleted(post: Post) {
@@ -43,7 +44,7 @@ class AdapterFragmentSG(private val context: Context, private var listaImagens: 
             .into(holder.estiloImagem)
 
         holder.estiloImagem.setOnClickListener{
-            modalFragment = ModalPostagemFragment(buttonActive, listaImagens[position].Post, listaImagens[position].nomeUsuario, listaImagens[position].tokenUsuario, this)
+            modalFragment = ModalPostagemFragment(buttonActive, usuario, listaImagens[position].Post, listaImagens[position].nomeUsuario, listaImagens[position].tokenUsuario, this)
             val args = Bundle()
             val fragmentManager = (context as AppCompatActivity).supportFragmentManager
 

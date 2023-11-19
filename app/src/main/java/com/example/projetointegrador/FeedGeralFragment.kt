@@ -38,7 +38,7 @@ class FeedGeralFragment (private var posts: List<Post>, private var usuario: Usu
             }
         }
 
-        val adapter = AdapterFragment(requireContext(), listaImagens)
+        val adapter = AdapterFragment(requireContext(), listaImagens, usuario)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.recyclerFG)
 

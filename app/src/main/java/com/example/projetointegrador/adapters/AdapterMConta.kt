@@ -67,7 +67,7 @@ class AdapterMConta(
 
 
         holder.estiloImagem.setOnClickListener{
-            modalFragment = ModalPostagemFragment(buttonActive, listaImagens[position].Post, listaImagens[position].nomeUsuario, listaImagens[position].tokenUsuario, this)
+            modalFragment = ModalPostagemFragment(buttonActive, usuario, listaImagens[position].Post, listaImagens[position].nomeUsuario, listaImagens[position].tokenUsuario, this)
             val args = Bundle()
             val fragmentManager = (contexto as AppCompatActivity).supportFragmentManager
 

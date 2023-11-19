@@ -3,6 +3,7 @@ package com.example.projetointegrador
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.BoringLayout
 import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import com.example.projetointegrador.services.OnPostInteractionListener
 import com.example.projetointegrador.api.RetrofitClient
 import com.example.projetointegrador.models.Comentario
 import com.example.projetointegrador.models.Post
+import com.example.projetointegrador.models.Usuario
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +31,7 @@ import retrofit2.Response
 
 class ModalPostagemFragment(
     private val buttonActive: Boolean,
+    private var usuario: Usuario,
     private var post: Post,
     private val nomeUsuarioLogado: String,
     private val token_usuario: String,
@@ -36,6 +39,7 @@ class ModalPostagemFragment(
 ) : DialogFragment() {
     lateinit var iconHeart: ImageView
     lateinit var curtidas: TextView
+    lateinit var addSeguindo: ImageView
     lateinit var textoComentario : EditText
     lateinit var comentariosArtificiais: MutableList<Comentario>
     private lateinit var adapterComentarios: AdapterComentarios
@@ -75,8 +79,9 @@ class ModalPostagemFragment(
 
         recyclerView.addItemDecoration(SpaceItemDecoration(espacamento))
 
-        curtidas = view.findViewById<TextView>(R.id.numCurtidas)
-        iconHeart = view.findViewById<ImageView>(R.id.iconHeart)
+        curtidas = view.findViewById(R.id.numCurtidas)
+        addSeguindo = view.findViewById(R.id.addSeguindo)
+        iconHeart = view.findViewById(R.id.iconHeart)
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
         recyclerView.adapter = adapterComentarios
@@ -90,9 +95,17 @@ class ModalPostagemFragment(
             iconHeart.setOnClickListener {curtirFoto(false)}
         }
 
+        if (usuario.seguindo.contains(post.usuario)) {
+            addSeguindo.setColorFilter(Color.parseColor("#FF4081"))
+            addSeguindo.setOnClickListener{Seguir(true)}
+        } else {
+            addSeguindo.setOnClickListener{Seguir(false)}
+        }
+
 
         buttonDeletar.visibility = if (!buttonActive) View.GONE else View.VISIBLE
         usuarioPostagem.visibility = if (buttonActive) View.GONE else View.VISIBLE
+        addSeguindo.visibility = if (buttonActive) View.GONE else View.VISIBLE
         usuarioPostagem.text = post.usuario
 
         if (buttonActive) {
@@ -108,6 +121,18 @@ class ModalPostagemFragment(
         }
 
         return view
+    }
+
+    private fun Seguir(seguindo: Boolean) {
+        if(seguindo) {
+            addSeguindo.setColorFilter(Color.parseColor("#000000"))
+            addSeguindo.setOnClickListener {Seguir(false)}
+            return
+        }
+
+        addSeguindo.setColorFilter(Color.parseColor("#FF4081"))
+        addSeguindo.setOnClickListener {Seguir(true)}
+
     }
 
     override fun onResume() {
