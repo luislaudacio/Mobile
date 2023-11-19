@@ -9,9 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.media3.common.Format
 import com.example.projetointegrador.api.RetrofitClient
-import com.example.projetointegrador.models.Post
 import com.example.projetointegrador.models.Usuario
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -119,24 +117,13 @@ class TelaCadastro : AppCompatActivity() {
             return;
         }
 
-        usuario = Usuario(
-            _id = "",
-            message = "",
-            access_token = "",
-            email = txtEmail.text.toString(),
-            senha = txtSenha.text.toString(),
-            usuario = txtUsuario.text.toString(),
-            dataNasc= txtData.text.toString(),
-            dataAtual = "",
-            seguidores= emptyArray(),
-            seguindo = emptyArray(),
-            criadoEm= "",
-            posts= emptyList()
-        )
-
         val retrofitCli: RetrofitClient = RetrofitClient()
-        retrofitCli.servicoUsuario.userRegister(usuario)
-            .enqueue(object : Callback<Usuario> {
+        retrofitCli.servicoUsuario.userRegister(mapOf(
+            "email" to txtEmail.text.toString(),
+            "senha" to txtSenha.text.toString(),
+            "usuario" to txtUsuario.text.toString(),
+            "dataNasc" to formatarData(txtData.text.toString()),
+        )).enqueue(object : Callback<Usuario> {
 
                 override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
                     if (!response.isSuccessful) {
@@ -174,6 +161,14 @@ class TelaCadastro : AppCompatActivity() {
                     return
                 }
             })
+    }
+
+    fun formatarData(data: String): String {
+        val formatoEntrada = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formatoSaida = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val dataFormatada: Date = formatoEntrada.parse(data) ?: Date()
+        return formatoSaida.format(dataFormatada)
     }
 
 }

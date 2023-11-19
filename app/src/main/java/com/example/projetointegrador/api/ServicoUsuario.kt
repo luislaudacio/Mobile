@@ -17,7 +17,7 @@
         fun getToken(@Body usuario: Usuario): Call<Usuario>
 
         @POST("user/register")
-        fun userRegister(@Body usuario: Usuario): Call<Usuario>
+        fun userRegister(@Body body: Map<String, String>): Call<Usuario>
 
         @GET("user/email/{email}")
         fun getUserInfo(@Path("email") email: String, @Header("Authorization") token: String): Call<Usuario>
@@ -40,6 +40,10 @@
 
         @POST("post/create/{idUsuario}")
         fun createPost(@Path("idUsuario") idUsuario: String, @Header("Authorization") token: String, @Body body: Map<String, String>): Call<JsonObject>
+
+        @POST("comment/create/{idPost}")
+        fun createComment(@Path("idPost") idPost: String, @Header("Authorization") token: String, @Body body: Map<String, String>): Call<JsonObject>
+
 
     }
 

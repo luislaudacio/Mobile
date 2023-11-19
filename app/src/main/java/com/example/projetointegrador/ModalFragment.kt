@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,31 +17,30 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.example.projetointegrador.api.RetrofitClient
 import com.example.projetointegrador.models.Usuario
-import com.google.common.net.MediaType
 import com.google.gson.JsonObject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import java.io.File
 import retrofit2.Response
 import android.Manifest
-import android.graphics.Color
-import android.webkit.MimeTypeMap
 import android.widget.EditText
-import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.example.projetointegrador.adapters.AdapterMConta
+import com.example.projetointegrador.models.Post
 
-
-class ModalFragment (private val usuario: Usuario): DialogFragment() {
+class ModalFragment (
+    private val usuario: Usuario,
+    private val adapterMC: AdapterMConta
+): DialogFragment() {
     private val PICK_IMAGE_REQUEST = 1
     private var nomeImagemSelecionada: String? = null
     private lateinit var imagemSelecionada: Uri
     private var MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1
-    lateinit var comentarioTexto: EditText
-
+    private lateinit var comentarioTexto: EditText
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,7 +49,6 @@ class ModalFragment (private val usuario: Usuario): DialogFragment() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE)
         }
-
 
 
         Log.i("Permissão", "onCreateView chamado")
@@ -118,6 +115,7 @@ class ModalFragment (private val usuario: Usuario): DialogFragment() {
     private fun enviarPost() {
         if (!::imagemSelecionada.isInitialized) {
             Log.i("ModalFragment", "Imagem não selecionada")
+            Toast.makeText(requireContext(), "Você não selecionou a imagem!", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -171,19 +169,35 @@ class ModalFragment (private val usuario: Usuario): DialogFragment() {
                             override fun onResponse(call: Call<JsonObject>, criarPost: Response<JsonObject>) {
                                 if (!criarPost.isSuccessful) {
                                     Log.e("Criar POST", "Erro ao Criar Post: " + criarPost)
+                                    Toast.makeText(requireContext(), "Erro ao Criar Post", Toast.LENGTH_LONG).show()
                                     return
                                 }
 
                                 val criarPostBody = criarPost.body()
                                 if (criarPostBody != null) {
                                     Log.e("Criar POST",  "Post Criado: ${criarPostBody}")
+                                    Toast.makeText(requireContext(), "Post Criado!", Toast.LENGTH_LONG).show()
 
-                                    Log.e("Criar POST", "Post Criado")
+                                    val newPost = Post(
+                                        usuario = usuario.usuario,
+                                        pathFotoPost = imageUrl,
+                                        descricaoPost = comentarioTexto.text.toString(),
+                                        _id = "",
+                                        atualizadoEm = "",
+                                        criadoEm = "",
+                                        comentarios = emptyList(),
+                                        curtidas = emptyList(),
+                                        tags = emptyList()
+                                    )
+                                    adapterMC.onPostUploaded(newPost)
+
+                                    dismiss()
                                     return
                                 }
                             }
 
                             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                Toast.makeText(requireContext(), "Erro ao Criar Post", Toast.LENGTH_LONG).show()
                                 Log.e("Criar POST", "Erro ao criar post: " + t)
                                 return
                             }
@@ -193,11 +207,13 @@ class ModalFragment (private val usuario: Usuario): DialogFragment() {
                 }
 
                 override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                    Toast.makeText(requireContext(), "Erro ao Criar Post", Toast.LENGTH_LONG).show()
                     Log.e("ModalFragment", "Falha na requisição: ${t.message}")
                     return
                 }
             })
         } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Erro ao mandar iamgem para o servidor!", Toast.LENGTH_LONG).show()
             Log.e("ModalFragment", "Erro ao processar a imagem: ${e.message}")
         }
     }
