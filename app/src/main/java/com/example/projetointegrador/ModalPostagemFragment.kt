@@ -35,7 +35,8 @@ class ModalPostagemFragment(
     private var post: Post,
     private val nomeUsuarioLogado: String,
     private val token_usuario: String,
-    private val onPostInteractionListener: OnPostInteractionListener
+    private val onPostInteractionListener: OnPostInteractionListener,
+    private var fragment: SeguindoFragment? = null
 ) : DialogFragment() {
     lateinit var iconHeart: ImageView
     lateinit var curtidas: TextView
@@ -124,15 +125,48 @@ class ModalPostagemFragment(
     }
 
     private fun Seguir(seguindo: Boolean) {
-        if(seguindo) {
-            addSeguindo.setColorFilter(Color.parseColor("#000000"))
-            addSeguindo.setOnClickListener {Seguir(false)}
-            return
-        }
+        val retrofitCli: RetrofitClient = RetrofitClient()
+        val call = retrofitCli.servicoUsuario.seguir(nomeUsuarioLogado, post.usuario, "Bearer ${token_usuario}")
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, infosResponse: Response<Void>) {
+                if (!infosResponse.isSuccessful) {
+                    Log.e("Seguiu!", "etr: " + infosResponse)
+                    Toast.makeText(requireContext(), "Erro ao seguir!", Toast.LENGTH_LONG).show()
+                    return
+                }
 
-        addSeguindo.setColorFilter(Color.parseColor("#FF4081"))
-        addSeguindo.setOnClickListener {Seguir(true)}
+                if (seguindo) {
+                    val seguindoMutavel = usuario.seguindo.toMutableList()
+                    seguindoMutavel.remove(post.usuario)
+                    val novaListaSeguindo = seguindoMutavel.toList()
+                    usuario.seguindo = novaListaSeguindo.toTypedArray()
 
+                    Log.e("Seguiu!", "Parou de Seguir!")
+                    addSeguindo.setColorFilter(Color.parseColor("#000000"))
+                    addSeguindo.setOnClickListener {Seguir(false)}
+                    Toast.makeText(requireContext(), "Você parou de seguir!", Toast.LENGTH_LONG).show()
+                    fragment?.onFollowActionCompleted()
+                    return;
+                }
+
+                val novaListaSeguindo = usuario.seguindo + post.usuario
+                usuario.seguindo = novaListaSeguindo
+
+                Log.e("Seguiu!", "Começou a seguir!")
+
+                Toast.makeText(requireContext(), "Você começou a seguir!", Toast.LENGTH_LONG).show()
+                addSeguindo.setColorFilter(Color.parseColor("#FF4081"))
+                addSeguindo.setOnClickListener {Seguir(true)}
+                fragment?.onFollowActionCompleted()
+            }
+
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("Seguiu!", "onFailure: " + t)
+                Toast.makeText(requireContext(), "Erro ao seguir!", Toast.LENGTH_LONG).show()
+                return
+            }
+        })
     }
 
     override fun onResume() {
@@ -176,30 +210,30 @@ class ModalPostagemFragment(
                     Log.e("Erro Desconhecido! 3", "etr: " + infosResponse)
                     Toast.makeText(requireContext(), "Erro ao deixar/tirar o like!", Toast.LENGTH_LONG).show()
                     return
-                } else {
-                    if (like) {
-                        val curtidasMutavel = post.curtidas.toMutableList()
-                        curtidasMutavel.remove(nomeUsuarioLogado)
-                        val novaListaCurtidas = curtidasMutavel.toList()
-                        post.curtidas = novaListaCurtidas
-
-                        Log.e("deslike!", "deslikeou!")
-                        curtidas.text = post.curtidas.size.toString()
-                        iconHeart.setColorFilter(Color.parseColor("#000000"))
-                        iconHeart.setOnClickListener {curtirFoto(false)}
-                        Toast.makeText(requireContext(), "Você tirou seu Like!", Toast.LENGTH_LONG).show()
-                        return;
-                    }
-
-                    val novaListaCurtidas = post.curtidas + nomeUsuarioLogado
-                    post.curtidas = novaListaCurtidas
-                    Log.e("like!", "Curtioooooo!")
-
-                    Toast.makeText(requireContext(), "Você deixou seu Like!", Toast.LENGTH_LONG).show()
-                    curtidas.text = post.curtidas.size.toString()
-                    iconHeart.setColorFilter(Color.parseColor("#FF4081"))
-                    iconHeart.setOnClickListener {curtirFoto(true)}
                 }
+
+                if (like) {
+                    val curtidasMutavel = post.curtidas.toMutableList()
+                    curtidasMutavel.remove(nomeUsuarioLogado)
+                    val novaListaCurtidas = curtidasMutavel.toList()
+                    post.curtidas = novaListaCurtidas
+
+                    Log.e("deslike!", "deslikeou!")
+                    curtidas.text = post.curtidas.size.toString()
+                    iconHeart.setColorFilter(Color.parseColor("#000000"))
+                    iconHeart.setOnClickListener {curtirFoto(false)}
+                    Toast.makeText(requireContext(), "Você tirou seu Like!", Toast.LENGTH_LONG).show()
+                    return;
+                }
+
+                val novaListaCurtidas = post.curtidas + nomeUsuarioLogado
+                post.curtidas = novaListaCurtidas
+                Log.e("like!", "Curtioooooo!")
+
+                Toast.makeText(requireContext(), "Você deixou seu Like!", Toast.LENGTH_LONG).show()
+                curtidas.text = post.curtidas.size.toString()
+                iconHeart.setColorFilter(Color.parseColor("#FF4081"))
+                iconHeart.setOnClickListener {curtirFoto(true)}
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
@@ -259,6 +293,7 @@ class ModalPostagemFragment(
         })
     }
 
+
     class SpaceItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(
             outRect: Rect, view: View,
@@ -271,3 +306,9 @@ class ModalPostagemFragment(
     }
 
 }
+
+
+
+
+
+

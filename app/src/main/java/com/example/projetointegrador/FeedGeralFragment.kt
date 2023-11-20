@@ -14,7 +14,7 @@ import com.example.projetointegrador.models.Usuario
 import com.example.projetointegrador.models.modalItem
 
 
-class FeedGeralFragment (private var posts: List<Post>, private var usuario: Usuario) : Fragment() {
+class FeedGeralFragment (private var posts: List<Post>, private var usuario: Usuario, private var fragment: SeguindoFragment) : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
 
@@ -38,7 +38,7 @@ class FeedGeralFragment (private var posts: List<Post>, private var usuario: Usu
             }
         }
 
-        val adapter = AdapterFragment(requireContext(), listaImagens, usuario)
+        val adapter = AdapterFragment(requireContext(), listaImagens, usuario, fragment)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.recyclerFG)
 
