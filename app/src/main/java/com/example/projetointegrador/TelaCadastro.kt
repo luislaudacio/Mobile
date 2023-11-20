@@ -24,7 +24,6 @@ import java.util.Locale
 
 class TelaCadastro : AppCompatActivity() {
 
-    lateinit var usuario: Usuario
     lateinit var txtUsuario:EditText
     lateinit var txtEmail:EditText
     lateinit var txtData:EditText
