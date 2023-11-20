@@ -102,17 +102,17 @@ class TelaCadastro : AppCompatActivity() {
             return;
         }
 
-        val temCaractereEspecial = txtSenha.text.toString().contains(Regex("[!@#\$%^&*()_+\\-=\\[\\]{};':\",.<>?]"))
-        val temLetraMaiuscula = txtSenha.text.toString().contains(Regex("[A-Z]"))
-        val temLetraMinuscula = txtSenha.text.toString().contains(Regex("[a-z]"))
+//        val temCaractereEspecial = txtSenha.text.toString().contains(Regex("[!@#\$%^&*()_+\\-=\\[\\]{};':\",.<>?]"))
+//        val temLetraMaiuscula = txtSenha.text.toString().contains(Regex("[A-Z]"))
+//        val temLetraMinuscula = txtSenha.text.toString().contains(Regex("[a-z]"))  temCaractereEspecial && temLetraMaiuscula && temLetraMinuscula
         val temDoisNumeros = txtSenha.text.toString().count { it.isDigit() } >= 2
         val temPeloMenosCincoCaracteres = txtSenha.text.toString().length >= 5
 
-        val senhaValida = temCaractereEspecial && temLetraMaiuscula && temLetraMinuscula && temDoisNumeros && temPeloMenosCincoCaracteres
+        val senhaValida = temDoisNumeros && temPeloMenosCincoCaracteres
 
         if (!senhaValida) {
             Toast.makeText(this@TelaCadastro,
-                "Sua Senha é muito fraca, ela precisa de ao menos 1 caractere Especial, uma letra Minuscula, uma maiuscula, 2 numeros e no minimo 5 digitos", Toast.LENGTH_LONG).show()
+                "Sua Senha é muito fraca, 2 numeros e no minimo 5 digitos", Toast.LENGTH_LONG).show()
 
             return;
         }
@@ -132,7 +132,6 @@ class TelaCadastro : AppCompatActivity() {
                         val errorMessage = errorJsonObject["message"].toString()
 
                         if (errorResponse != null) {
-                            Log.e("Dados Invalidos", "Usuario: " + usuario)
                             Log.e("Dados Invalidos", "errorResponse: " + errorMessage)
                             Toast.makeText(this@TelaCadastro, "Dados Invalidos: ${errorMessage.toString()}", Toast.LENGTH_LONG).show()
                             return
