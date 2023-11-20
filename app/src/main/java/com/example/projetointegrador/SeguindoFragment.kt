@@ -56,7 +56,6 @@ class SeguindoFragment(private var posts: List<Post>, private var usuario: Usuar
 
         val screenSize = resources.configuration.screenWidthDp
 
-        val screenSize = resources.configuration.screenWidthDp
         if (screenSize < 390) {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
         }
