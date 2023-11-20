@@ -51,7 +51,7 @@ class SeguindoFragment(private var posts: List<Post>, private var usuario: Usuar
     }
 
     private fun configureAdapter() {
-        adapter = AdapterFragmentSG(requireContext(), listaImagens, usuario)
+        adapter = AdapterFragmentSG(requireContext(), listaImagens, usuario, this)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         recyclerView.adapter = adapter
 
