@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logotipo"
+            android:text="TakePic"
             android:textColor="#333"
             android:textStyle="bold"
             android:textSize="25dp"
