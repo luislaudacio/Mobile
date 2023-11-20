@@ -3,6 +3,7 @@ package com.example.projetointegrador
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -23,7 +24,6 @@ import java.util.Locale
 
 class TelaCadastro : AppCompatActivity() {
 
-    lateinit var usuario: Usuario
     lateinit var txtUsuario:EditText
     lateinit var txtEmail:EditText
     lateinit var txtData:EditText
@@ -147,8 +147,12 @@ class TelaCadastro : AppCompatActivity() {
                         Log.i("Usuario Criado", "onResponse: " + jsonResponse.toString())
                         Toast.makeText(this@TelaCadastro, "Usuario Criado", Toast.LENGTH_LONG).show()
 
+                        txtUsuario.text = Editable.Factory.getInstance().newEditable("")
+                        txtEmail.text = Editable.Factory.getInstance().newEditable("")
+                        txtData.text = Editable.Factory.getInstance().newEditable("")
+                        txtSenha.text = Editable.Factory.getInstance().newEditable("")
+
                         var intent: Intent = Intent(this@TelaCadastro, MainActivity:: class.java)
-                        intent.putExtra("usuario", usuario)
                         startActivity(intent)
                         return
                     }
