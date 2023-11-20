@@ -44,6 +44,7 @@
         @POST("comment/create/{idPost}")
         fun createComment(@Path("idPost") idPost: String, @Header("Authorization") token: String, @Body body: Map<String, String>): Call<JsonObject>
 
-
+        @POST("follow/{usuarioLogado}/{usuarioSeguir}")
+        fun seguir(@Path("usuarioLogado") usuarioLogado: String, @Path("usuarioSeguir") usuarioSeguir: String,  @Header("Authorization") token: String): Call<Void>
     }
 

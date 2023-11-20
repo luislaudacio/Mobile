@@ -2,12 +2,16 @@ package com.example.projetointegrador
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.projetointegrador.adapters.ViewPagerAdapter
 import com.example.projetointegrador.api.RetrofitClient
@@ -25,14 +29,11 @@ class FeedGeral : AppCompatActivity() {
     lateinit var usuario: Usuario
     lateinit var posts : List<Post>
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
         val extras = intent.extras
         if (extras != null) {
             usuario = getIntent().getSerializableExtra("usuario") as Usuario
         }
-
 
         posts = mutableListOf<Post>()
 
@@ -84,36 +85,44 @@ class FeedGeral : AppCompatActivity() {
 
 
     }
-
-    private fun configTabLayout() {
-        val adapter: ViewPagerAdapter = ViewPagerAdapter(this)
-        val ConteudoViewPager: ViewPager2 = findViewById(R.id.viewPager)
-        val tabLayout = findViewById<TabLayout>(R.id.tabs)
-
-        ConteudoViewPager.adapter = adapter
-
-        adapter.addFragment(FeedGeralFragment(posts, usuario))
-        adapter.addFragment(SeguindoFragment(posts, usuario))
-
-
-        val mediator = TabLayoutMediator(tabLayout, ConteudoViewPager) {
-            tab, position ->
-
-            when (position) {
-                0 -> tab.text = "Feed Geral"
-                1 -> tab.text = "Seguindo"
-
-                else -> tab.text = "Aba Padrão"
-            }
-        }.attach()
-
-
-    }
-
     fun redMinhaConta(view: View) {
         var intent: Intent = Intent(this, MinhaConta:: class.java)
         intent.putExtra("usuario", usuario)
         startActivity(intent)
+    }
+
+    private fun configTabLayout() {
+        val viewPager: ViewPager2 = findViewById(R.id.viewPager)
+        val tabLayout = findViewById<TabLayout>(R.id.tabs)
+
+        val seguindoFragment = SeguindoFragment(posts, usuario)
+        val feedGeralFragment = FeedGeralFragment(posts, usuario, seguindoFragment)
+
+        val adapter = object : FragmentStateAdapter(this) {
+            override fun getItemCount(): Int = 2
+
+            override fun createFragment(position: Int): Fragment {
+                return when (position) {
+                    0 -> feedGeralFragment
+                    1 -> seguindoFragment
+                    else -> throw IllegalArgumentException("Posição inválida: $position")
+                }
+            }
+        }
+
+        viewPager.adapter = adapter
+        viewPager.setCurrentItem(1, false)
+
+        Handler().postDelayed({
+            viewPager.setCurrentItem(0, true)
+        }, 0)
+
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Feed Geral"
+                1 -> tab.text = "Seguindo"
+            }
+        }.attach()
     }
 
 

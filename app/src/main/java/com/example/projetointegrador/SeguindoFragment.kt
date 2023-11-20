@@ -1,5 +1,6 @@
 package com.example.projetointegrador
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,23 +15,51 @@ import com.example.projetointegrador.models.Usuario
 import com.example.projetointegrador.models.modalItem
 
 
-class SeguindoFragment (private var posts: List<Post>, private var usuario: Usuario) : Fragment() {
-
+class SeguindoFragment(private var posts: List<Post>, private var usuario: Usuario) : Fragment() {
     private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: AdapterFragmentSG
+    private var listaImagens: MutableList<modalItem> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_seguindo, container, false)
-        var listaImagens = mutableListOf<modalItem>()
+        recyclerView = view.findViewById(R.id.recyclerSG)
 
-        if (posts != null) {
-            fun realizarValidacoes(post: Post) {
-                if (!usuario.seguindo.contains(post.usuario)) {
-                    return;
+        configureAdapter()
+
+        if (posts.isNotEmpty()) {
+            listaImagens.clear()
+            for (post in posts) {
+                if (usuario.seguindo.contains(post.usuario)) {
+                    listaImagens.add(
+                        modalItem(
+                            image = ImageItem(post.pathFotoPost),
+                            nomeUsuario = usuario.usuario,
+                            tokenUsuario = usuario.access_token,
+                            Post = post
+                        )
+                    )
                 }
+            }
+            adapter.notifyDataSetChanged()
+        }
 
+        return view
+    }
+
+    private fun configureAdapter() {
+        adapter = AdapterFragmentSG(requireContext(), listaImagens, usuario)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        recyclerView.adapter = adapter
+    }
+
+    fun onFollowActionCompleted() {
+        // Atualizar a lista e notificar o adaptador
+        listaImagens.clear()
+        for (post in posts) {
+            if (usuario.seguindo.contains(post.usuario)) {
                 listaImagens.add(
                     modalItem(
                         image = ImageItem(post.pathFotoPost),
@@ -40,18 +69,8 @@ class SeguindoFragment (private var posts: List<Post>, private var usuario: Usua
                     )
                 )
             }
-
-            posts.forEach { post -> realizarValidacoes(post) }
         }
-
-
-        val adapter = AdapterFragmentSG(requireContext(), listaImagens, usuario)
-
-        recyclerView = view.findViewById<RecyclerView>(R.id.recyclerSG)
-
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        recyclerView.adapter = adapter
-
-        return view
+        adapter.notifyDataSetChanged()
     }
 }
+
