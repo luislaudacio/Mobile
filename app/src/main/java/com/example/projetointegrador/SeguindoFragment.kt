@@ -18,6 +18,7 @@ import com.example.projetointegrador.models.modalItem
 class SeguindoFragment(private var posts: List<Post>, private var usuario: Usuario) : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdapterFragmentSG
+    val screenSize = resources.configuration.screenWidthDp
     private var listaImagens: MutableList<modalItem> = mutableListOf()
 
     override fun onCreateView(
@@ -53,6 +54,11 @@ class SeguindoFragment(private var posts: List<Post>, private var usuario: Usuar
         adapter = AdapterFragmentSG(requireContext(), listaImagens, usuario)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         recyclerView.adapter = adapter
+
+
+        if (screenSize < 390) {
+            recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
+        }
     }
 
     fun onFollowActionCompleted() {

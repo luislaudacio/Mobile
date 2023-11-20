@@ -51,6 +51,13 @@ class MinhaConta : AppCompatActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         recyclerView.adapter = adapter
 
+
+        val screenSize = resources.configuration.screenWidthDp
+
+        if (screenSize <= 390) {
+            recyclerView.layoutManager = GridLayoutManager(this, 1)
+        }
+
         sairConta.setOnClickListener{sairContaUsuario()}
         addFotos.setOnClickListener{
             val modalFragment = ModalFragment(usuario, adapter)

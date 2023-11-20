@@ -171,8 +171,10 @@ class ModalPostagemFragment(
 
     override fun onResume() {
         super.onResume()
+
         val width = (resources.displayMetrics.widthPixels * 1.00).toInt()
-        val height = (resources.displayMetrics.widthPixels * 1.80).toInt()
+        val height = (resources.displayMetrics.heightPixels * 0.95).toInt()
+
         dialog?.window?.setLayout(width, height)
     }
 
