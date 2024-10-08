@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ProjetoIntegrador</string>
+    <string name="Login"> Login </string>
+    <string name="Cadastrar"> Cadastrar </string>
+    <string name="criarConta"> <font color="#f1396d"> <a>Clique aqui para criar sua conta</a></font> </string>
+    <string name="logarConta"><font color="#f1396d"> <a>Clique aqui para logar na conta</a></font> </string>
+    <string name="FeedGeral">Feed Geral</string>
+    <string name="Seguindo">Seguindo</string>
+</resources>

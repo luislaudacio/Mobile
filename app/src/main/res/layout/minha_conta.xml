@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:padding="0dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="25px"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TakePic"
+            android:textColor="#333"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:layout_gravity="left"
+            android:gravity="left"
+            android:layout_weight="90"
+            android:onClick="feedGer"
+            >
+
+        </TextView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+
+            <TextView
+                android:id="@+id/nomeMinhaConta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mario"
+                android:layout_gravity="center"
+                android:textColor="#333"
+                android:layout_marginLeft="10dp"
+                android:textSize="15dp"
+                >
+
+            </TextView>
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_person_24"
+                android:layout_marginLeft="5dp"
+                >
+
+            </ImageView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/line_divider"
+        >
+
+    </ImageView>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="25px"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/MinhaContaText"
+            android:text="Minha Conta"
+            android:textColor="#333"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:layout_gravity="left"
+            android:gravity="left"
+            android:layout_weight="85"
+            android:textColorLink="@color/pink"
+            >
+
+        </TextView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_add_24"
+                android:background="@color/dark_gray"
+                android:id="@+id/addFotos"
+                >
+
+            </ImageButton>
+
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_exit_to_app_24"
+                android:layout_marginLeft="20dp"
+                android:background="@color/dark_gray"
+                android:id="@+id/sairConta"
+                >
+
+            </ImageButton>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="27dp"
+        android:padding="0dp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/recyclerImgs"
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
